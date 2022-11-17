@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: covid-app-api-gateway
+  cloud:
+    gateway:
+      routes:
+      - id: country-service
+        uri:
+          lb://COVID-APP-COUNTRY-SERVICE
+        predicates:
+        - Path=/countries/**
+      - id: auth-service
+        uri:
+          lb://COVID-APP-AUTH-SERVICE
+        predicates:
+        - Path=/users/**
+      - id: auth-service2
+        uri:
+          lb://COVID-APP-AUTH-SERVICE
+        predicates:
+        - Path=/app/**
+      - id: watchlist-service
+        uri:
+          lb://COVID-APP-WATCHLIST-SERVICE
+        predicates:
+        - Path=/watchlists/**
+      - id: covid-api
+        uri: https://covid19.mathdro.id
+        predicates:
+        - Path=/covid-api/**
+        filters:
+        - StripPrefix=1
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+      globalcors:
+          cors-configurations: 
+            '[/**]':
+              allowed-origins: "*"
+              allowed-methods: "*"
+              allowed-headers: "*"
+
+server:
+  port: 8888

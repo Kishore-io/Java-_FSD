@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: mobile-app-gateway
+  cloud:
+    gateway:
+      routes:
+      - id: mobile-app
+        uri:
+          lb://MOBILE-APP-SERVICE
+        predicates:
+        - Path=/mobiles/**
+
+server:
+  port: 8888
